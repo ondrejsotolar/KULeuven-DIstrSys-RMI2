@@ -8,59 +8,85 @@ import java.rmi.registry.Registry;
 import java.util.Date;
 import java.util.List;
 
-import rental.Quote;
-import rental.RemoteCarRentalCompany;
-import rental.RemoteRentalServer;
-import rental.RemoteRentalSession;
-import rental.RemoteSessionManager;
-import rental.Reservation;
-import rental.CarType;
-import rental.ReservationConstraints;
+import rental.*;
 
-public class Client {
+public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManagerSession>{
 	
 	/********
 	 * MAIN *
 	 ********/
-	
 	public static void main(String[] args) throws Exception {
 		
 		String carRentalCompanyName = "Hertz";
 		Client c1 = new Client("peter");
 		
-		
 		// An example reservation scenario on car rental company 'Hertz' would be...
-		//Client client = new Client("simpleTrips", carRentalCompanyName);
-		//client.run();
+		Client client = new Client("trips");
+		client.run();
 	}
 	
 	/***************
 	 * CONSTRUCTOR *
 	 ***************/
-	
 	RemoteSessionManager stub;
-	
-	public Client(String userName) throws AlreadyBoundException {
-		
-		Registry registry;
-		try {
-			registry = LocateRegistry.getRegistry();
-			stub = (RemoteSessionManager) registry.lookup("sessionManager");
-			String sessionName = stub.createSession(userName);
-			RemoteRentalSession session = (RemoteRentalSession) registry.lookup(sessionName);
-			
-			
-		} catch (RemoteException e ) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			e.printStackTrace();
-		}
-		
+
+    public Client(String scriptFile) throws AlreadyBoundException {
+		super(scriptFile);
 	}
-	
+
+    @Override
+    protected RemoteRentalSession getNewReservationSession(String name) throws Exception {
+        Registry registry;
+        try {
+            registry = LocateRegistry.getRegistry();
+            stub = (RemoteSessionManager) registry.lookup("sessionManager");
+
+            String sessionName = stub.createSession(name);
+            RemoteRentalSession session = (RemoteRentalSession) registry.lookup(sessionName);
+
+            System.out.println("CLIENT LOG: getNewReservationSession returns:'" + sessionName + "' SUCCESS");
+            return session;
+        } catch (RemoteException e ) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+        throw new Exception("CLIENT LOG: something went wrong in method: getNewReservationSession");
+    }
+
+    @Override
+    protected RemoteManagerSession getNewManagerSession(String name, String carRentalName) throws Exception {
+        return null;
+    }
+
+    @Override
+    protected void checkForAvailableCarTypes(RemoteRentalSession remoteRentalSession, Date start, Date end) throws Exception {
+
+    }
+
+    @Override
+    protected void addQuoteToSession(RemoteRentalSession remoteRentalSession, String name, Date start, Date end, String carType, String region) throws Exception {
+
+    }
+
+    @Override
+    protected List<Reservation> confirmQuotes(RemoteRentalSession remoteRentalSession, String name) throws Exception {
+        return null;
+    }
+
+    @Override
+    protected int getNumberOfReservationsBy(RemoteManagerSession ms, String clientName) throws Exception {
+        return 0;
+    }
+
+    @Override
+    protected int getNumberOfReservationsForCarType(RemoteManagerSession ms, String carRentalName, String carType) throws Exception {
+        return 0;
+    }
+
 //	public Client(String scriptFile, String carRentalCompanyName) {
 //		//super(scriptFile);
-//		
+//
 //		Registry registry;
 //		try {
 //			registry = LocateRegistry.getRegistry();
@@ -72,7 +98,7 @@ public class Client {
 //		} catch (NotBoundException e) {
 //			e.printStackTrace();
 //		}
-//		
+//
 //	}
 	
 //	/**

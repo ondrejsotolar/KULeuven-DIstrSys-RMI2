@@ -1,8 +1,11 @@
 package rental;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -41,8 +44,14 @@ public class RentalServer{
 		CrcData out = new CrcData();
 		int nextuid = 0;
 
-		// open file
-		BufferedReader in = new BufferedReader(new FileReader(datafile));
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL url = classLoader.getResource("hertz.csv");
+        FileReader fileReader = new FileReader(url.getPath());
+
+        // open file
+        BufferedReader in = new BufferedReader(fileReader);
+        //BufferedReader in = new BufferedReader(new FileReader(datafile));
 		StringTokenizer csvReader;
 		
 		try {

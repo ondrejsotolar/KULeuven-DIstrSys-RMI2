@@ -10,7 +10,7 @@ public interface RemoteRentalSession extends Remote {
 	Quote createQuote(ReservationConstraints constraints, String client)
 			throws ReservationException, RemoteException, Exception;
 	
-    Collection<Quote> getCurrentQuotes();
+    Collection<Quote> getCurrentQuotes() throws RemoteException;
     
-    List<Reservation> confirmQuotes() throws ReservationException;
+    List<Reservation> confirmQuotes() throws ReservationException, RemoteException;
 }

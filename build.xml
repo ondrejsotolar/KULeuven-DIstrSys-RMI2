@@ -26,13 +26,18 @@
   <target name="init" >
 	<delete dir="${build}" quiet="true"/>
     <mkdir dir="${build}"/>
-	<delete dir="${dist}" quiet="true"/>
-    <mkdir dir="${build}"/>
+	<!--<delete dir="${dist}" quiet="true"/>-->
+    <!--<mkdir dir="${build}"/>-->
   </target>
 
   <target name="compile" depends="init">
     <javac includeantruntime="false" srcdir="${src}" destdir="${build}"/>
+	  <copy todir="${build}">
+		  <fileset dir="src"
+				   includes="hertz.csv,trips,dockx.csv" />
+	  </copy>
   </target>
+
   
   <target name="registry.start">
 	<exec spawn="true" executable="rmiregistry" dir="${build}"/>

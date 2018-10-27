@@ -118,7 +118,7 @@ public abstract class AbstractTestAgency<ReservationSession, ManagerSession> ext
      *
      * @throws Exception if things go wrong, throw exception
      */
-    protected abstract int getNumberOfReservationsForCarType(ManagerSession ms, String carRentalName, String carType) throws Exception;    
+    protected abstract int getNumberOfReservationsForCarType(ManagerSession ms, String carRentalName, String carType) throws Exception;
 
     public AbstractTestAgency(String scriptFile) {
         super(scriptFile);
@@ -162,7 +162,7 @@ public abstract class AbstractTestAgency<ReservationSession, ManagerSession> ext
 		} else if (cmd.equals("BF")){
             try {
                 confirmQuotes(session, name);
-   			} catch (Exception e) { throw new ApplicationException(e); }          
+   			} catch (Exception e) { throw new ApplicationException(e); }
 		} else if (cmd.equals("BM")){
 			try {
                 assessTotalReservations(name, scriptLineTokens);
@@ -189,10 +189,10 @@ public abstract class AbstractTestAgency<ReservationSession, ManagerSession> ext
 
     private void assessTotalReservationsRenter(String name, StringTokenizer scriptReader) throws Exception {
 		ManagerSession rental = getNewManagerSession(name, name);
-		
+
 		while(scriptReader.hasMoreTokens()){
 			String pars = scriptReader.nextToken();
-			
+
 			int nr = getNumberOfReservationsBy(rental,name);
 			if (Integer.parseInt(pars) == nr) {
 				System.out.println(name + " has correct totals " + pars + " " + nr);
@@ -202,7 +202,7 @@ public abstract class AbstractTestAgency<ReservationSession, ManagerSession> ext
 		}
 	}
 
-    
+
 
     private void assessTotalReservations(String name, StringTokenizer scriptReader) throws Exception {
         ManagerSession rental = getNewManagerSession(name, name);

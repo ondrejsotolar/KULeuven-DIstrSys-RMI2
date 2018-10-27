@@ -1,6 +1,7 @@
 package rental;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,9 +11,10 @@ public class RentalSession implements RemoteRentalSession {
 	private String userName;
     private List<Quote> quoteStore;
     
-    public RentalSession(String userName) {
-        
-    	this.userName = userName;
+    public RentalSession(String userName) throws RemoteException {
+        super();
+
+        this.userName = userName;
     	this.quoteStore = new ArrayList<>();
         
     }
