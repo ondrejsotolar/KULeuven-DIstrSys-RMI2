@@ -61,7 +61,8 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
 
     @Override
     protected void checkForAvailableCarTypes(RemoteRentalSession remoteRentalSession, Date start, Date end) throws Exception {
-
+        remoteRentalSession.checkForAvailableCarTypes(start, end);
+        System.out.println("CLIENT LOG: checkForAvailableCarTypes SUCCESS");
     }
 
     @Override

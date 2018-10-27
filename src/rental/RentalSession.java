@@ -2,9 +2,7 @@ package rental;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class RentalSession implements RemoteRentalSession {
 
@@ -59,5 +57,24 @@ public class RentalSession implements RemoteRentalSession {
             }
         }
         return successfulReservations;
+    }
+
+    public void checkForAvailableCarTypes(Date start, Date end) throws Exception {
+        boolean isAvailable = false;
+
+        for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
+            Set<CarType> availableCarTypes = carRentalCompany.getAvailableCarTypes(start, end);
+
+            if (availableCarTypes == null || availableCarTypes.size() < 1) {
+
+            }
+            else {
+                isAvailable = true;
+            }
+
+            if (!isAvailable) {
+                throw new Exception("No car is available.");
+            }
+        }
     }
 }
