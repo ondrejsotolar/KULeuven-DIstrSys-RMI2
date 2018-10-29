@@ -19,17 +19,16 @@ public class RentalSession implements RemoteRentalSession {
 
 
     public Quote createQuote(ReservationConstraints constraints, String guest) throws Exception {
-        
    	   	for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
-                        
             try {
                 Quote q = carRentalCompany.createQuote(constraints, guest);
                 this.quoteStore.add(q);
-                //System.out.println("Reservation success for " + guest);
+                System.out.println("SERVER LOG: RentalSession: Reservation success for " + guest);
                 return q;
             }
             catch (ReservationException e) {
-                //System.out.println("ReservationExcepion for " + guest);
+                System.out.println("SERVER LOG: RentalSession: ReservationExcepion for " + guest);
+                //e.printStackTrace();
             }
         }
         throw new ReservationException("ReservationException: no car matches constraints." + guest);

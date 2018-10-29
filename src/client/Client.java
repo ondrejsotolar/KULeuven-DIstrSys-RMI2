@@ -17,8 +17,8 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
 	 ********/
 	public static void main(String[] args) throws Exception {
 		
-		String carRentalCompanyName = "Hertz";
-		Client c1 = new Client("peter");
+//		String carRentalCompanyName = "Hertz";
+//		Client c1 = new Client("peter");
 		
 		// An example reservation scenario on car rental company 'Hertz' would be...
 		Client client = new Client("trips");
@@ -67,7 +67,9 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
 
     @Override
     protected void addQuoteToSession(RemoteRentalSession remoteRentalSession, String name, Date start, Date end, String carType, String region) throws Exception {
+        ReservationConstraints rc = new ReservationConstraints(start, end, carType, region);
 
+        remoteRentalSession.createQuote(rc, name);
     }
 
     @Override

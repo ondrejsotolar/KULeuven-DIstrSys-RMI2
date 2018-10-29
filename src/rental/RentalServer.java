@@ -29,6 +29,9 @@ public class RentalServer{
 		
 		CrcData data  = loadData("hertz.csv");
 		rentalCompanies.put(data.name, new CarRentalCompany(data.name, data.regions, data.cars));
+
+        CrcData data2  = loadData("dockx.csv");
+        rentalCompanies.put(data2.name, new CarRentalCompany(data2.name, data2.regions, data2.cars));
 		
 		SessionManager sessionManager = new SessionManager();
 		RemoteSessionManager stub = (RemoteSessionManager) UnicastRemoteObject.exportObject(sessionManager, 0);
@@ -36,17 +39,14 @@ public class RentalServer{
         registry.bind("sessionManager", stub);
 	}
 
-	
-	
 	public static CrcData loadData(String datafile)
 			throws ReservationException, NumberFormatException, IOException {
 
 		CrcData out = new CrcData();
 		int nextuid = 0;
 
-
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL url = classLoader.getResource("hertz.csv");
+        URL url = classLoader.getResource(datafile);
         FileReader fileReader = new FileReader(url.getPath());
 
         // open file
