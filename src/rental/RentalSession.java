@@ -21,7 +21,9 @@ public class RentalSession implements RemoteRentalSession {
     public Quote createQuote(ReservationConstraints constraints, String guest) throws Exception {
    	   	for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
             try {
-                Quote q = carRentalCompany.createQuote(constraints, guest);
+            	System.out.println("Checking at company " + carRentalCompany.getName() + " for " + constraints.getCarType() );
+            	Quote q = carRentalCompany.createQuote(constraints, guest);
+                
                 this.quoteStore.add(q);
                 System.out.println("SERVER LOG: RentalSession: Reservation success for " + guest);
                 return q;

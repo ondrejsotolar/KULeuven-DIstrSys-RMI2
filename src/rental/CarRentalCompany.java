@@ -128,9 +128,15 @@ public class CarRentalCompany implements RemoteCarRentalCompany{
                         new Object[]{name, client, constraints.toString()});
 		
 				
-		if(!regions.contains(constraints.getRegion()) || !isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate()))
+		try {
+			if(!regions.contains(constraints.getRegion()) || !isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate()))
+				throw new ReservationException("<" + name
+						+ "> No cars available to satisfy the given constraints.");
+		} catch (IllegalArgumentException e) {
 			throw new ReservationException("<" + name
-				+ "> No cars available to satisfy the given constraints.");
+					+ "> No cars available to satisfy the given constraints.");
+		}
+			
 
 		CarType type = getCarType(constraints.getCarType());
 		
