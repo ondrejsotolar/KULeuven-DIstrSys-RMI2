@@ -68,13 +68,15 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
     @Override
     protected void addQuoteToSession(RemoteRentalSession remoteRentalSession, String name, Date start, Date end, String carType, String region) throws Exception {
         ReservationConstraints rc = new ReservationConstraints(start, end, carType, region);
-
+        if (carType.equals("Premium")) {
+            System.out.println(carType + " " + region + " AAAAAAAAAAAAAAAAAAAAAAa");
+        }
         remoteRentalSession.createQuote(rc, name);
     }
 
     @Override
     protected List<Reservation> confirmQuotes(RemoteRentalSession remoteRentalSession, String name) throws Exception {
-        return null;
+        return remoteRentalSession.confirmQuotes();
     }
 
     @Override
