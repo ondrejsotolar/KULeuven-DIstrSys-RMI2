@@ -44,7 +44,7 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             registry = LocateRegistry.getRegistry();
             stub = (RemoteSessionManager) registry.lookup("sessionManager");
 
-            String sessionName = stub.createSession(name);
+            String sessionName = stub.createSession("rentalSession_"+name);
             RemoteRentalSession session = (RemoteRentalSession) registry.lookup(sessionName);
 
             System.out.println("CLIENT LOG: getNewReservationSession returns:'" + sessionName + "' SUCCESS");
@@ -64,7 +64,7 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             registry = LocateRegistry.getRegistry();
             stub = (RemoteSessionManager) registry.lookup("sessionManager");
 
-            String sessionName = stub.createManagerSession(name);
+            String sessionName = stub.createManagerSession("managerSession_"+name);
             RemoteManagerSession session = (RemoteManagerSession) registry.lookup(sessionName);
 
             System.out.println("CLIENT LOG: getNewManagerSession returns:'" + sessionName + "' SUCCESS");
@@ -105,12 +105,12 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
 
     @Override
     protected int getNumberOfReservationsBy(RemoteManagerSession ms, String clientName) throws Exception {
-        return 0;
+        return ms.getNumberOfReservationsBy(clientName);
     }
 
     @Override
     protected int getNumberOfReservationsForCarType(RemoteManagerSession ms, String carRentalName, String carType) throws Exception {
-        return 0;
+        return ms.getNumberOfReservationsForCarType(carRentalName, carType);
     }
 
     @Override
