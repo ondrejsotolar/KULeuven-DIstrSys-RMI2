@@ -20,4 +20,17 @@ public class SessionManager implements RemoteSessionManager {
 		return userName;
 	}
 
+	public String createManagerSession(String userName) throws RemoteException, AlreadyBoundException {
+
+		ManagerSession obj = new ManagerSession(userName);
+		RemoteManagerSession stub = (RemoteManagerSession) UnicastRemoteObject.exportObject(obj, 0);
+
+		//TODO maybe check for duplicate users
+		Registry registry = LocateRegistry.getRegistry();
+		registry.bind(userName, stub);
+
+		System.out.println("SERVER LOG: createManagerSession returns: '"+userName+"' SUCCESS");
+		return userName;
+	}
+
 }

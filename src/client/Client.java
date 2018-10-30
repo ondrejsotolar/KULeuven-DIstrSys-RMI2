@@ -7,10 +7,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import rental.*;
 
-public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManagerSession>{
+public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteManagerSession>{
 	
 	/********
 	 * MAIN *
@@ -29,6 +30,8 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
 	 * CONSTRUCTOR *
 	 ***************/
 	RemoteSessionManager stub;
+
+
 
     public Client(String scriptFile) throws AlreadyBoundException {
 		super(scriptFile);
@@ -56,7 +59,22 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
 
     @Override
     protected RemoteManagerSession getNewManagerSession(String name, String carRentalName) throws Exception {
-        return null;
+        Registry registry;
+        try {
+            registry = LocateRegistry.getRegistry();
+            stub = (RemoteSessionManager) registry.lookup("sessionManager");
+
+            String sessionName = stub.createManagerSession(name);
+            RemoteManagerSession session = (RemoteManagerSession) registry.lookup(sessionName);
+
+            System.out.println("CLIENT LOG: getNewManagerSession returns:'" + sessionName + "' SUCCESS");
+            return session;
+        } catch (RemoteException e ) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+        throw new Exception("CLIENT LOG: something went wrong in method: getNewManagerSession");
     }
 
     @Override
@@ -80,6 +98,12 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
     }
 
     @Override
+    protected String getCheapestCarType(RemoteRentalSession remoteRentalSession, Date start, Date end, String region) throws Exception {
+        return remoteRentalSession.getCheapestCarType(start, end, region);
+    }
+
+
+    @Override
     protected int getNumberOfReservationsBy(RemoteManagerSession ms, String clientName) throws Exception {
         return 0;
     }
@@ -89,106 +113,14 @@ public class Client extends AbstractTestAgency<RemoteRentalSession, RemoteManage
         return 0;
     }
 
-//	public Client(String scriptFile, String carRentalCompanyName) {
-//		//super(scriptFile);
-//
-//		Registry registry;
-//		try {
-//			registry = LocateRegistry.getRegistry();
-//			stub = (RemoteRentalServer) registry.lookup("RemoteCarRentalCompany");
-//			String response = stub.getName();
-//			System.out.println("response " + response);
-//		} catch (RemoteException e ) {
-//			e.printStackTrace();
-//		} catch (NotBoundException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
-	
-//	/**
-//	 * Check which car types are available in the given period
-//	 * and print this list of car types.
-//	 *
-//	 * @param 	start
-//	 * 			start time of the period
-//	 * @param 	end
-//	 * 			end time of the period
-//	 * @throws 	Exception
-//	 * 			if things go wrong, throw exception
-//	 */
-//	@Override
-//	protected void checkForAvailableCarTypes(Date start, Date end) throws Exception {
-//		System.out.println(stub.getAvailableCarTypes(start, end));
-//	}
-//
-//	/**
-//	 * Retrieve a quote for a given car type (tentative reservation).
-//	 * 
-//	 * @param	clientName 
-//	 * 			name of the client 
-//	 * @param 	start 
-//	 * 			start time for the quote
-//	 * @param 	end 
-//	 * 			end time for the quote
-//	 * @param 	carType 
-//	 * 			type of car to be reserved
-//	 * @param 	region
-//	 * 			region in which car must be available
-//	 * @return	the newly created quote
-//	 *  
-//	 * @throws 	Exception
-//	 * 			if things go wrong, throw exception
-//	 */
-//	@Override
-//	protected Quote createQuote(String clientName, Date start, Date end,
-//			String carType, String region) throws Exception {
-//		ReservationConstraints constraints = new ReservationConstraints(start, end, carType, region);
-//		return stub.createQuote(constraints, clientName);
-//	}
-//
-//	/**
-//	 * Confirm the given quote to receive a final reservation of a car.
-//	 * 
-//	 * @param 	quote 
-//	 * 			the quote to be confirmed
-//	 * @return	the final reservation of a car
-//	 * 
-//	 * @throws 	Exception
-//	 * 			if things go wrong, throw exception
-//	 */
-//	@Override
-//	protected Reservation confirmQuote(Quote quote) throws Exception {
-//		return stub.confirmQuote(quote);
-//	}
-//	
-//	/**
-//	 * Get all reservations made by the given client.
-//	 *
-//	 * @param 	clientName
-//	 * 			name of the client
-//	 * @return	the list of reservations of the given client
-//	 * 
-//	 * @throws 	Exception
-//	 * 			if things go wrong, throw exception
-//	 */
-//	@Override
-//	protected List<Reservation> getReservationsByRenter(String clientName) throws Exception {
-//		return stub.getReservationsByRenter(clientName);
-//	}
-//
-//	/**
-//	 * Get the number of reservations for a particular car type.
-//	 * 
-//	 * @param 	carType 
-//	 * 			name of the car type
-//	 * @return 	number of reservations for the given car type
-//	 * 
-//	 * @throws 	Exception
-//	 * 			if things go wrong, throw exception
-//	 */
-//	@Override
-//	protected int getNumberOfReservationsForCarType(String carType) throws Exception {
-//		return stub.getNbReservationsByCarType(carType);
-//	}
+    @Override
+    protected Set<String> getBestClients(RemoteManagerSession ms) throws Exception {
+        return null;
+    }
+
+
+    @Override
+    protected CarType getMostPopularCarTypeIn(RemoteManagerSession ms, String carRentalCompanyName, int year) throws Exception {
+        return null;
+    }
 }

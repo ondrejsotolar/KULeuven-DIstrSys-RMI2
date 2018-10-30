@@ -16,4 +16,6 @@ public interface RemoteRentalSession extends Remote {
     List<Reservation> confirmQuotes() throws ReservationException, RemoteException;
 
     void checkForAvailableCarTypes(Date start, Date end) throws Exception, RemoteException;
+
+    String getCheapestCarType(Date start, Date end, String region) throws RemoteException;
 }

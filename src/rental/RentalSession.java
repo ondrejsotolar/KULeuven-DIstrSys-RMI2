@@ -78,4 +78,25 @@ public class RentalSession implements RemoteRentalSession {
             }
         }
     }
+
+    public String getCheapestCarType(Date start, Date end, String region) {
+        double cheapestCarPrice = Double.MAX_VALUE;
+        String cheapestCarType = "";
+
+        for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
+            Set<CarType> availableCarTypes = carRentalCompany.getAvailableCarTypes(start, end);
+
+            if (availableCarTypes == null || availableCarTypes.size() < 1) {
+                continue;
+            }
+
+            for (CarType type : availableCarTypes) {
+                if (type.getRentalPricePerDay() < cheapestCarPrice) {
+                    cheapestCarPrice = type.getRentalPricePerDay();
+                    cheapestCarType = type.getName();
+                }
+            }
+        }
+        return cheapestCarType;
+    }
 }
