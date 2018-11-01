@@ -12,16 +12,13 @@ import java.util.Set;
 import rental.*;
 
 public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteManagerSession>{
-	
+
+    RemoteSessionManager stub;
+
 	/********
 	 * MAIN *
 	 ********/
 	public static void main(String[] args) throws Exception {
-		
-//		String carRentalCompanyName = "Hertz";
-//		Client c1 = new Client("peter");
-		
-		// An example reservation scenario on car rental company 'Hertz' would be...
 		Client client = new Client("trips");
 		client.run();
 	}
@@ -29,10 +26,6 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
 	/***************
 	 * CONSTRUCTOR *
 	 ***************/
-	RemoteSessionManager stub;
-
-
-
     public Client(String scriptFile) throws AlreadyBoundException {
 		super(scriptFile);
 	}
@@ -64,9 +57,7 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             stub = (RemoteSessionManager) registry.lookup("sessionManager");
 
             String sessionName = stub.createManagerSession("managerSession_"+name);
-            RemoteManagerSession session = (RemoteManagerSession) registry.lookup(sessionName);
-
-            return session;
+            return (RemoteManagerSession) registry.lookup(sessionName);
         } catch (RemoteException e ) {
             e.printStackTrace();
         } catch (NotBoundException e) {

@@ -26,8 +26,8 @@
   <target name="init" >
 	<delete dir="${build}" quiet="true"/>
     <mkdir dir="${build}"/>
-	<!--<delete dir="${dist}" quiet="true"/>-->
-    <!--<mkdir dir="${build}"/>-->
+	<delete dir="${dist}" quiet="true"/>
+    <mkdir dir="${build}"/>
   </target>
 
   <target name="compile" depends="init">

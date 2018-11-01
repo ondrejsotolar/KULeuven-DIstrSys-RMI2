@@ -13,7 +13,6 @@ public class SessionManager implements RemoteSessionManager {
 		RentalSession obj = new RentalSession(sessionName);
 		RemoteRentalSession stub = (RemoteRentalSession) UnicastRemoteObject.exportObject(obj, 0);
 
-		//TODO maybe check for duplicate users
 		Registry registry = LocateRegistry.getRegistry();
         registry.bind(sessionName, stub);
 
@@ -29,7 +28,6 @@ public class SessionManager implements RemoteSessionManager {
 		ManagerSession obj = new ManagerSession(userName);
 		RemoteManagerSession stub = (RemoteManagerSession) UnicastRemoteObject.exportObject(obj, 0);
 
-		//TODO maybe check for duplicate users
 		Registry registry = LocateRegistry.getRegistry();
 		registry.bind(userName, stub);
 

@@ -17,7 +17,6 @@ public class RentalSession implements RemoteRentalSession {
         
     }
 
-
     public Quote createQuote(ReservationConstraints constraints, String guest) throws Exception {
    	   	for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
             try {
@@ -33,13 +32,9 @@ public class RentalSession implements RemoteRentalSession {
         }
         throw new ReservationException("ReservationException: no car matches constraints." + guest);
     }
-    
-    public Collection<Quote> getCurrentQuotes() {
-        return this.quoteStore;
-    }
-    
+
     public List<Reservation> confirmQuotes() throws ReservationException {
-        List<Reservation> successfulReservations = new ArrayList();
+        List<Reservation> successfulReservations = new ArrayList<>();
         
         for (Quote q : quoteStore) {
             try {
@@ -64,10 +59,7 @@ public class RentalSession implements RemoteRentalSession {
         for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
             Set<CarType> availableCarTypes = carRentalCompany.getAvailableCarTypes(start, end);
 
-            if (availableCarTypes == null || availableCarTypes.size() < 1) {
-
-            }
-            else {
+            if (availableCarTypes != null && availableCarTypes.size() >= 1) {
                 isAvailable = true;
             }
 
