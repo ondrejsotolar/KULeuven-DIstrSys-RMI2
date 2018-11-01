@@ -30,22 +30,31 @@ public class ManagerSession implements RemoteManagerSession {
     }
 
     public Set<String> getBestClients() throws RemoteException {
-        Map<String,Integer> rentersWithTotNbReservations = new HashMap<>();
+        Map<String,Integer> counter = new HashMap<>();
 
         for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
-            int max = 0;
-            String name = "";
             for (Map.Entry<String, Integer> entry : carRentalCompany.getRentersWithNbReservations().entrySet()) {
                 String key = entry.getKey();
                 Integer value = entry.getValue();
-                if (value > max) {
-                    max = value;
-                    name = key;
-                }
-                System.out.println("SRVER LOG: getBestClients: " + key + " " + value.toString());
+
+                counter.putIfAbsent(key, 0);
+                counter.put(key, counter.get(key) + value);
             }
-            rentersWithTotNbReservations.put(name,max);
         }
-        return new HashSet<>(rentersWithTotNbReservations.keySet());
+        int max = 0;
+        Set<String> names = new HashSet<>();
+        for (Map.Entry<String, Integer> entry : counter.entrySet()) {
+            String name = entry.getKey();
+            Integer value = entry.getValue();
+
+            if (value > max) {
+                max = value;
+                names.clear();
+                names.add(name);
+            } else if (value == max) {
+                names.add(name);
+            }
+        }
+        return names;
     }
 }
