@@ -209,14 +209,13 @@ public class CarRentalCompany implements RemoteCarRentalCompany{
 	}
 
 	public Map<String,Integer> getRentersWithNbReservations() {
-		Map<String,Integer> rentersWithNbReservations  = new HashMap<>();
+		Map<String,Integer> counter  = new HashMap<>();
 		for (Car car: cars) {
 			for (Reservation res: car.getAllReservations()) {
-				rentersWithNbReservations.put(
-						res.getCarRenter(),
-						rentersWithNbReservations.getOrDefault(res.getCarRenter(),0)+1);
+				counter.putIfAbsent(res.getCarRenter(), 0);
+				counter.put(res.getCarRenter(), counter.get(res.getCarRenter()) + 1);
 			}
 		}
-		return rentersWithNbReservations;
+		return counter;
 	}
 }

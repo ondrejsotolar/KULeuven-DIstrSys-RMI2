@@ -30,14 +30,14 @@ import rental.CarType;
  */
 public abstract class AbstractTestManagement<ReservationSession, ManagerSession> extends AbstractTestAgency<ReservationSession, ManagerSession> {
 
-    /**
-     * Get the (list of) best clients, i.e. clients that have highest number of
-     * reservations (across all rental agencies).
-     *
-     * @param ms manager session
-     * @return set of best clients
-     * @throws Exception if things go wrong, throw exception
-     */
+        /**
+         * Get the (list of) best clients, i.e. clients that have highest number of
+         * reservations (across all rental agencies).
+         *
+         * @param ms manager session
+         * @return set of best clients
+         * @throws Exception if things go wrong, throw exception
+         */
 	protected abstract Set<String> getBestClients(ManagerSession ms) throws Exception;
 
     /**

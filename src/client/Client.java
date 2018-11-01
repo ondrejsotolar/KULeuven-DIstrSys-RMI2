@@ -111,7 +111,7 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
     @Override
     protected int getNumberOfReservationsForCarType(RemoteManagerSession ms, String carRentalName, String carType) throws Exception {
         return ms.getNumberOfReservationsForCarType(carRentalName, carType);
-    }
+}
 
     @Override
     protected Set<String> getBestClients(RemoteManagerSession ms) throws Exception {

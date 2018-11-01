@@ -32,28 +32,20 @@ public class ManagerSession implements RemoteManagerSession {
     public Set<String> getBestClients() throws RemoteException {
         Map<String,Integer> rentersWithTotNbReservations = new HashMap<>();
 
-//        m2.forEach((k, v) -> m.merge(k, v, (v1, v2) -> v1 + v2));
-
         for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
-            carRentalCompany.getRentersWithNbReservations().forEach( (k,v) ->
-                rentersWithTotNbReservations.merge(k, v, (v1,v2) -> v1 + v2));
-        }
-
-        String bestClient = "";
-        int highestNbReservations = 0;
-        for (Map.Entry<String, Integer> entry: rentersWithTotNbReservations.entrySet()) {
-            if (entry.getValue() > highestNbReservations) {
-                highestNbReservations = entry.getValue();
-                bestClient = entry.getKey();
+            int max = 0;
+            String name = "";
+            for (Map.Entry<String, Integer> entry : carRentalCompany.getRentersWithNbReservations().entrySet()) {
+                String key = entry.getKey();
+                Integer value = entry.getValue();
+                if (value > max) {
+                    max = value;
+                    name = key;
+                }
+                System.out.println("SRVER LOG: getBestClients: " + key + " " + value.toString());
             }
+            rentersWithTotNbReservations.put(name,max);
         }
-        Set<String> bestClients = Collections.emptySet();
-        bestClients.add(bestClient);
-        return bestClients;
+        return new HashSet<>(rentersWithTotNbReservations.keySet());
     }
-
-//    CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
-//
-//    }
-    
 }
