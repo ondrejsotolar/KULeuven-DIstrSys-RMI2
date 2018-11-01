@@ -1,16 +1,12 @@
 package rental;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class CarRentalCompany implements RemoteCarRentalCompany{
 
@@ -217,5 +213,32 @@ public class CarRentalCompany implements RemoteCarRentalCompany{
 			}
 		}
 		return counter;
+	}
+
+	public CarType getMostPopularCarType(int year) {
+		Map<CarType,Integer> counter  = new HashMap<>();
+		for (Car car: cars) {
+			for (Reservation res: car.getAllReservations()
+					.stream().filter(x ->
+							LocalDateTime.ofInstant(x.getStartDate().toInstant(),
+									ZoneId.systemDefault()).getYear()  == year)
+					.collect(Collectors.toList())) {
+
+				counter.putIfAbsent(car.getType(), 0);
+				counter.put(car.getType(), counter.get(car.getType()) + 1);
+			}
+		}
+		int max = 0;
+		CarType type = null;
+		for (Map.Entry<CarType, Integer> entry : counter.entrySet()) {
+			CarType carType = entry.getKey();
+			Integer value = entry.getValue();
+
+			if (value > max) {
+				max = value;
+				type = carType;
+			}
+		}
+		return type;
 	}
 }

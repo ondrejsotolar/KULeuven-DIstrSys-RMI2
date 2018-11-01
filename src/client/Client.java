@@ -47,7 +47,6 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             String sessionName = stub.createSession("rentalSession_"+name);
             RemoteRentalSession session = (RemoteRentalSession) registry.lookup(sessionName);
 
-            System.out.println("CLIENT LOG: getNewReservationSession returns:'" + sessionName + "' SUCCESS");
             return session;
         } catch (RemoteException e ) {
             e.printStackTrace();
@@ -67,7 +66,6 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             String sessionName = stub.createManagerSession("managerSession_"+name);
             RemoteManagerSession session = (RemoteManagerSession) registry.lookup(sessionName);
 
-            System.out.println("CLIENT LOG: getNewManagerSession returns:'" + sessionName + "' SUCCESS");
             return session;
         } catch (RemoteException e ) {
             e.printStackTrace();
@@ -80,15 +78,11 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
     @Override
     protected void checkForAvailableCarTypes(RemoteRentalSession remoteRentalSession, Date start, Date end) throws Exception {
         remoteRentalSession.checkForAvailableCarTypes(start, end);
-        System.out.println("CLIENT LOG: checkForAvailableCarTypes SUCCESS");
     }
 
     @Override
     protected void addQuoteToSession(RemoteRentalSession remoteRentalSession, String name, Date start, Date end, String carType, String region) throws Exception {
         ReservationConstraints rc = new ReservationConstraints(start, end, carType, region);
-        if (carType.equals("Premium")) {
-            System.out.println(carType + " " + region + " AAAAAAAAAAAAAAAAAAAAAAa");
-        }
         remoteRentalSession.createQuote(rc, name);
     }
 
@@ -121,6 +115,6 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
 
     @Override
     protected CarType getMostPopularCarTypeIn(RemoteManagerSession ms, String carRentalCompanyName, int year) throws Exception {
-        return null;
+        return ms.getMostPopularCarTypeIn(carRentalCompanyName, year);
     }
 }

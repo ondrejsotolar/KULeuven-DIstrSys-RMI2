@@ -57,4 +57,10 @@ public class ManagerSession implements RemoteManagerSession {
         }
         return names;
     }
+
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
+        CarRentalCompany company = RentalServer.rentalCompanies.get(carRentalCompanyName);
+
+        return company.getMostPopularCarType(year);
+    }
 }

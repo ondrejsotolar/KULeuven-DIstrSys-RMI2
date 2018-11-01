@@ -13,6 +13,6 @@ public interface RemoteManagerSession extends Remote {
 
 	Set<String> getBestClients() throws RemoteException;
 
-//	CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year);
+	CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) throws RemoteException;
 
 }
