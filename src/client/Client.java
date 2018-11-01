@@ -115,7 +115,7 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
 
     @Override
     protected Set<String> getBestClients(RemoteManagerSession ms) throws Exception {
-        return null;
+        return ms.getBestClients();
     }
 
 

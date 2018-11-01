@@ -207,5 +207,16 @@ public class CarRentalCompany implements RemoteCarRentalCompany{
 		}
 		return listOfReservations.size();
 	}
-	
+
+	public Map<String,Integer> getRentersWithNbReservations() {
+		Map<String,Integer> rentersWithNbReservations  = new HashMap<>();
+		for (Car car: cars) {
+			for (Reservation res: car.getAllReservations()) {
+				rentersWithNbReservations.put(
+						res.getCarRenter(),
+						rentersWithNbReservations.getOrDefault(res.getCarRenter(),0)+1);
+			}
+		}
+		return rentersWithNbReservations;
+	}
 }
