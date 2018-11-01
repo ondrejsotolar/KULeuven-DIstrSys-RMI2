@@ -52,8 +52,8 @@ public class ManagerSession implements RemoteManagerSession {
         return bestClients;
     }
 
-    CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
-
-    }
+//    CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
+//
+//    }
     
 }
