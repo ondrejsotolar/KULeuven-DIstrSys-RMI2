@@ -12,16 +12,13 @@ import java.util.Set;
 import rental.*;
 
 public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteManagerSession>{
-	
+
+    RemoteSessionManager stub;
+
 	/********
 	 * MAIN *
 	 ********/
 	public static void main(String[] args) throws Exception {
-		
-//		String carRentalCompanyName = "Hertz";
-//		Client c1 = new Client("peter");
-		
-		// An example reservation scenario on car rental company 'Hertz' would be...
 		Client client = new Client("trips");
 		client.run();
 	}
@@ -29,10 +26,6 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
 	/***************
 	 * CONSTRUCTOR *
 	 ***************/
-	RemoteSessionManager stub;
-
-
-
     public Client(String scriptFile) throws AlreadyBoundException {
 		super(scriptFile);
 	}
@@ -47,7 +40,6 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             String sessionName = stub.createSession("rentalSession_"+name);
             RemoteRentalSession session = (RemoteRentalSession) registry.lookup(sessionName);
 
-            System.out.println("CLIENT LOG: getNewReservationSession returns:'" + sessionName + "' SUCCESS");
             return session;
         } catch (RemoteException e ) {
             e.printStackTrace();
@@ -65,10 +57,7 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
             stub = (RemoteSessionManager) registry.lookup("sessionManager");
 
             String sessionName = stub.createManagerSession("managerSession_"+name);
-            RemoteManagerSession session = (RemoteManagerSession) registry.lookup(sessionName);
-
-            System.out.println("CLIENT LOG: getNewManagerSession returns:'" + sessionName + "' SUCCESS");
-            return session;
+            return (RemoteManagerSession) registry.lookup(sessionName);
         } catch (RemoteException e ) {
             e.printStackTrace();
         } catch (NotBoundException e) {
@@ -80,15 +69,11 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
     @Override
     protected void checkForAvailableCarTypes(RemoteRentalSession remoteRentalSession, Date start, Date end) throws Exception {
         remoteRentalSession.checkForAvailableCarTypes(start, end);
-        System.out.println("CLIENT LOG: checkForAvailableCarTypes SUCCESS");
     }
 
     @Override
     protected void addQuoteToSession(RemoteRentalSession remoteRentalSession, String name, Date start, Date end, String carType, String region) throws Exception {
         ReservationConstraints rc = new ReservationConstraints(start, end, carType, region);
-        if (carType.equals("Premium")) {
-            System.out.println(carType + " " + region + " AAAAAAAAAAAAAAAAAAAAAAa");
-        }
         remoteRentalSession.createQuote(rc, name);
     }
 
@@ -111,16 +96,16 @@ public class Client extends AbstractTestManagement<RemoteRentalSession, RemoteMa
     @Override
     protected int getNumberOfReservationsForCarType(RemoteManagerSession ms, String carRentalName, String carType) throws Exception {
         return ms.getNumberOfReservationsForCarType(carRentalName, carType);
-    }
+}
 
     @Override
     protected Set<String> getBestClients(RemoteManagerSession ms) throws Exception {
-        return null;
+        return ms.getBestClients();
     }
 
 
     @Override
     protected CarType getMostPopularCarTypeIn(RemoteManagerSession ms, String carRentalCompanyName, int year) throws Exception {
-        return null;
+        return ms.getMostPopularCarTypeIn(carRentalCompanyName, year);
     }
 }

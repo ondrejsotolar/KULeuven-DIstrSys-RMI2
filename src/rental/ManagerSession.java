@@ -2,9 +2,7 @@ package rental;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ManagerSession implements RemoteManagerSession {
 
@@ -30,6 +28,39 @@ public class ManagerSession implements RemoteManagerSession {
     	CarRentalCompany carRentalCompany = RentalServer.rentalCompanies.get(carRentalName);
     	return carRentalCompany.getNbReservationsByCarType(carType);
     }
-    
-    
+
+    public Set<String> getBestClients() throws RemoteException {
+        Map<String,Integer> counter = new HashMap<>();
+
+        for (CarRentalCompany carRentalCompany : RentalServer.rentalCompanies.values()) {
+            for (Map.Entry<String, Integer> entry : carRentalCompany.getRentersWithNbReservations().entrySet()) {
+                String key = entry.getKey();
+                Integer value = entry.getValue();
+
+                counter.putIfAbsent(key, 0);
+                counter.put(key, counter.get(key) + value);
+            }
+        }
+        int max = 0;
+        Set<String> names = new HashSet<>();
+        for (Map.Entry<String, Integer> entry : counter.entrySet()) {
+            String name = entry.getKey();
+            Integer value = entry.getValue();
+
+            if (value > max) {
+                max = value;
+                names.clear();
+                names.add(name);
+            } else if (value == max) {
+                names.add(name);
+            }
+        }
+        return names;
+    }
+
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
+        CarRentalCompany company = RentalServer.rentalCompanies.get(carRentalCompanyName);
+
+        return company.getMostPopularCarType(year);
+    }
 }
