@@ -39,7 +39,7 @@ public class RentalSession implements RemoteRentalSession {
         for (Quote q : quoteStore) {
             try {
                 CarRentalCompany carRentalCompany = RentalServer.rentalCompanies.get(q.getRentalCompany());
-                Reservation r = carRentalCompany.confirmQuote(q);
+                        Reservation r = carRentalCompany.confirmQuote(q);
                 successfulReservations.add(r);
             }
             catch (ReservationException e) {
